@@ -1,10 +1,4 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  logging: {
-    fetches: {
-      fullUrl: false,
-    },
-  },
-};
+const nextConfig = {};
 
 module.exports = nextConfig;
