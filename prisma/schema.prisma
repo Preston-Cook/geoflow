@@ -11,15 +11,22 @@ datasource db {
 }
 
 model Domain {
-  id          Int      @id @default(autoincrement())
-  domain      String   @unique
-  coordinates LatLng[]
+  id     Int        @id @default(autoincrement())
+  domain String     @unique
+  visits VistInfo[]
 }
 
-model LatLng {
-  id       Int     @id @default(autoincrement())
-  lat      Decimal
-  lng      Decimal
-  domain   Domain  @relation(fields: [domainId], references: [id])
+model VistInfo {
+  id       Int    @id @default(autoincrement())
+  lat      Float
+  lng      Float
+  ip       String
+  city     String
+  region   String
+  country  String
+  org      String
+  postal   String
+  timezone String
+  domain   Domain @relation(fields: [domainId], references: [id])
   domainId Int
 }
