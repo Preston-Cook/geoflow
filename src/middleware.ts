@@ -4,16 +4,17 @@ export function middleware(req: NextRequest) {
   const res = NextResponse.next();
 
   if (req.method === 'GET' || req.method === 'POST') {
-    const origin = req.headers.get('origin');
+    const origin =
+      req.headers.get('origin') ?? (req.headers.get('referer') as string);
 
     if (!origin) {
-      return NextResponse.json({ message: 'invalid origin' }, { status: 400 });
+      return NextResponse.json({ message: 'Invalid Origin' }, { status: 400 });
     }
 
     if (process.env.NODE_ENV === 'production') {
       if (!/^.+\.azurewebsites.net$/.test(origin)) {
         return NextResponse.json(
-          { message: 'invalid origin' },
+          { message: 'Invalid Origin' },
           { status: 400 }
         );
       } else {

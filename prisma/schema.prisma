@@ -11,7 +11,7 @@ datasource db {
 }
 
 model Domain {
-  Id          Int      @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   domain      String   @unique
   coordinates LatLng[]
 }
@@ -20,6 +20,6 @@ model LatLng {
   id       Int     @id @default(autoincrement())
   lat      Decimal
   lng      Decimal
-  domain   Domain  @relation(fields: [domainId], references: [Id])
+  domain   Domain  @relation(fields: [domainId], references: [id])
   domainId Int
 }

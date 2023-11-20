@@ -17,11 +17,15 @@
 
   localStorage.setItem('visitedTimestamp', new Date().toUTCString());
 
-  for (let i = 0; i < 3; i++) {
-    const res = await fetch('http://localhost:3000/script.js');
-    const data = await res.text();
+  const res = await fetch('https://api.ipify.org/?format=json');
+  const data = await res.json();
+  const { ip } = data as { ip: string };
 
-    console.log(data);
+  for (let i = 0; i < 3; i++) {
+    const res = await fetch('http://localhost:3000/api/geoflow', {
+      method: 'POST',
+      body: JSON.stringify({ ip }),
+    });
 
     if (res.ok) {
       return;

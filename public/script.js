@@ -21,10 +21,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
             return;
         }
         localStorage.setItem('visitedTimestamp', new Date().toUTCString());
+        const res = yield fetch('https://api.ipify.org/?format=json');
+        const data = yield res.json();
+        const { ip } = data;
         for (let i = 0; i < 3; i++) {
-            const res = yield fetch('http://localhost:3000/script.js');
-            const data = yield res.text();
-            console.log(data);
+            const res = yield fetch('http://localhost:3000/api/geoflow', {
+                method: 'POST',
+                body: JSON.stringify({ ip }),
+            });
             if (res.ok) {
                 return;
             }
