@@ -22,7 +22,7 @@
   const { ip } = data as { ip: string };
 
   for (let i = 0; i < 3; i++) {
-    const res = await fetch('http://localhost:3000/api/geoflow', {
+    const res = await fetch('https://geoflow.vercel.app/api/geoflow', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

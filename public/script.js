@@ -25,7 +25,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         const data = yield res.json();
         const { ip } = data;
         for (let i = 0; i < 3; i++) {
-            const res = yield fetch('http://localhost:3000/api/geoflow', {
+            const res = yield fetch('https://geoflow.vercel.app/api/geoflow', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
