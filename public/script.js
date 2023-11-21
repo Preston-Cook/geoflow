@@ -27,6 +27,9 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         for (let i = 0; i < 3; i++) {
             const res = yield fetch('http://localhost:3000/api/geoflow', {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
                 body: JSON.stringify({ ip }),
             });
             if (res.ok) {

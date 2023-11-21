@@ -31,3 +31,11 @@ model VistInfo {
   domain    Domain   @relation(fields: [domainId], references: [id])
   domainId  Int
 }
+
+model Contact {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  email     String
+  subject   String
+  message   String
+}

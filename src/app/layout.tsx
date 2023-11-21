@@ -5,6 +5,7 @@ import './globals.css';
 import Footer from './components/Footer';
 import Head from 'next/head';
 import 'leaflet/dist/leaflet.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const inter = Inter({ subsets: ['latin'] });
 

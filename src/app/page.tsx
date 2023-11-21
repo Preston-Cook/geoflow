@@ -21,7 +21,7 @@ export default async function Page() {
         </h1>
       </header>
 
-      <section className="flex flex-col items-center mx-8 mt-10 md:mt-20 gap-8 md:flex-row md:justify-around">
+      <section className="flex flex-col items-center md:mx-10 lg:mx-20 my-10 md:mt-20 gap-8 md:flex-row md:justify-around">
         <GeoBody domainData={domains} />
       </section>
     </>

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo } from 'react';
+import { useState, useMemo, ChangeEvent } from 'react';
 import { Prisma } from '@prisma/client';
 import dynamic from 'next/dynamic';
 import Spinner from './Spinner';
@@ -10,6 +10,8 @@ type DomainRecord = Prisma.DomainGetPayload<{
     visits: true;
   };
 }>;
+
+type VisitRecord = Prisma.VistInfoGetPayload<{}>;
 
 type GeoBodyProps = {
   domainData: DomainRecord[];
@@ -27,16 +29,19 @@ const formatter = new Intl.DateTimeFormat('en-US', {
 });
 
 export default function GeoBody({ domainData }: GeoBodyProps) {
-  const [domain, setDomain] = useState('');
+  const [domain, setDomain] = useState<DomainRecord | null>(null);
+  const [selectedVisitId, setSelectedVisitId] = useState<number | null>(null);
 
-  const visits = domainData.filter((el) => el.domain === domain);
-  const coordinates =
-    visits.length === 0
-      ? []
-      : visits[0].visits.map((el) => {
-          const { lat, lng } = el;
-          return { lat, lng };
-        });
+  function handleDomainChange(e: ChangeEvent<HTMLSelectElement>) {
+    const { value } = e.target;
+    if (value === '') {
+      setDomain(null);
+      setSelectedVisitId(null);
+      return;
+    }
+
+    setDomain(domainData.filter((el) => el.domain === value)[0]);
+  }
 
   const Map = useMemo(
     () =>
@@ -50,7 +55,7 @@ export default function GeoBody({ domainData }: GeoBodyProps) {
   return (
     <>
       <div className="w-[90%] md:w-[40%]">
-        <Map coordinates={coordinates} />
+        <Map domain={domain} selectedVisitId={selectedVisitId} />
       </div>
       <div className="bg-[#1F2937] w-[90%] md:w-[40%] px-6 py-6 rounded-xl max-h-[40vh] overflow-scroll">
         <label
@@ -58,15 +63,14 @@ export default function GeoBody({ domainData }: GeoBodyProps) {
           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
         >
           <p className="text-lg">
-            {domain === ''
-              ? 'Select a Subdomain'
-              : `Showing ${visits[0].visits.length} Logged Visit(s) to ${domain}`}
+            {domain
+              ? `Showing ${domain.visits.length} Logged Visit(s) to ${domain.domain}`
+              : 'Select a Subdomain'}
           </p>
         </label>
         <select
-          value={domain}
-          onChange={(e) => setDomain(e.target.value)}
-          id="countries"
+          value={domain?.domain}
+          onChange={handleDomainChange}
           className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
         >
           <option value={''}>Choose a Subdomain</option>
@@ -76,10 +80,10 @@ export default function GeoBody({ domainData }: GeoBodyProps) {
             </option>
           ))}
         </select>
-        {visits.length !== 0 && (
+        {domain && (
           <>
             <h3 className="mt-3 text-white text-lg">Detailed Information</h3>
-            {visits[0].visits.map((el, i) => {
+            {domain.visits.map((el, i) => {
               const {
                 ip,
                 lat,
@@ -89,13 +93,13 @@ export default function GeoBody({ domainData }: GeoBodyProps) {
                 country,
                 org,
                 postal,
-                timezone,
                 createdAt,
               } = el;
               return (
                 <div
-                  key={i}
-                  className="dark:text-gray-400 text-gray-500 my-3 border-gray-500 border-2 p-4 rounded-lg"
+                  onClick={() => setSelectedVisitId(el.id)}
+                  key={el.id}
+                  className="dark:text-gray-400 text-gray-500 my-3 border-gray-500 border-2 p-4 rounded-lg cursor-pointer"
                 >
                   <h3 className="font-semibold text-white">
                     Visit {i + 1}: {formatter.format(createdAt)}

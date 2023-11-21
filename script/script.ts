@@ -24,6 +24,9 @@
   for (let i = 0; i < 3; i++) {
     const res = await fetch('http://localhost:3000/api/geoflow', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
       body: JSON.stringify({ ip }),
     });
 

@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import prisma from '../../../../lib/db';
+import { Resend } from 'resend';
 
 type IPInfoResponse = {
   loc?: string;
