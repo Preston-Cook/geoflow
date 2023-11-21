@@ -17,16 +17,17 @@ model Domain {
 }
 
 model VistInfo {
-  id       Int    @id @default(autoincrement())
-  lat      Float
-  lng      Float
-  ip       String
-  city     String
-  region   String
-  country  String
-  org      String
-  postal   String
-  timezone String
-  domain   Domain @relation(fields: [domainId], references: [id])
-  domainId Int
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  lat       Float
+  lng       Float
+  ip        String
+  city      String
+  region    String
+  country   String
+  org       String
+  postal    String
+  timezone  String
+  domain    Domain   @relation(fields: [domainId], references: [id])
+  domainId  Int
 }

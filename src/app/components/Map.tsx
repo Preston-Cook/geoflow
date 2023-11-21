@@ -32,7 +32,13 @@ export default function Map({ coordinates }: MapProps) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {coordinates.map((coords, i) => (
-        <Marker key={i} position={[coords.lat, coords.lng]} />
+        <Marker
+          eventHandlers={{
+            click: (e) => console.log(e),
+          }}
+          key={i}
+          position={[coords.lat, coords.lng]}
+        />
       ))}
       <Recenter lat={center[0]} lng={center[1]} />
     </MapContainer>

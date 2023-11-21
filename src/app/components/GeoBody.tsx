@@ -15,25 +15,28 @@ type GeoBodyProps = {
   domainData: DomainRecord[];
 };
 
-type Coordinate = {
-  lat: number;
-  lng: number;
-};
+const formatter = new Intl.DateTimeFormat('en-US', {
+  hour: 'numeric',
+  minute: 'numeric',
+  hour12: true,
+  weekday: 'short',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+  timeZone: 'America/Chicago',
+});
 
 export default function GeoBody({ domainData }: GeoBodyProps) {
   const [domain, setDomain] = useState('');
 
-  let coordinates: Coordinate[] = [];
-
-  for (const record of domainData) {
-    if (record.domain === domain) {
-      coordinates = record.visits.map((visit) => {
-        const { lat, lng } = visit;
-        return { lat, lng };
-      });
-      break;
-    }
-  }
+  const visits = domainData.filter((el) => el.domain === domain);
+  const coordinates =
+    visits.length === 0
+      ? []
+      : visits[0].visits.map((el) => {
+          const { lat, lng } = el;
+          return { lat, lng };
+        });
 
   const Map = useMemo(
     () =>
@@ -49,7 +52,7 @@ export default function GeoBody({ domainData }: GeoBodyProps) {
       <div className="w-[90%] md:w-[40%]">
         <Map coordinates={coordinates} />
       </div>
-      <div className="bg-[#1F2937] w-[90%] md:w-[40%] px-6 py-6 rounded-xl">
+      <div className="bg-[#1F2937] w-[90%] md:w-[40%] px-6 py-6 rounded-xl max-h-[40vh] overflow-scroll">
         <label
           htmlFor="countries"
           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
@@ -57,7 +60,7 @@ export default function GeoBody({ domainData }: GeoBodyProps) {
           <p className="text-lg">
             {domain === ''
               ? 'Select a Subdomain'
-              : `Showing ${coordinates.length} Logged Visited to ${domain}`}
+              : `Showing ${visits[0].visits.length} Logged Visit(s) to ${domain}`}
           </p>
         </label>
         <select
@@ -73,6 +76,45 @@ export default function GeoBody({ domainData }: GeoBodyProps) {
             </option>
           ))}
         </select>
+        {visits.length !== 0 && (
+          <>
+            <h3 className="mt-3 text-white text-lg">Detailed Information</h3>
+            {visits[0].visits.map((el, i) => {
+              const {
+                ip,
+                lat,
+                lng,
+                city,
+                region,
+                country,
+                org,
+                postal,
+                timezone,
+                createdAt,
+              } = el;
+              return (
+                <div
+                  key={i}
+                  className="dark:text-gray-400 text-gray-500 my-3 border-gray-500 border-2 p-4 rounded-lg"
+                >
+                  <h3 className="font-semibold text-white">
+                    Visit {i + 1}: {formatter.format(createdAt)}
+                  </h3>
+                  <p>
+                    Location: {city}, {region} {postal}
+                  </p>
+                  <p>Country: {country}</p>
+                  <p>
+                    Lat/Lng: {lat}, {lng}
+                  </p>
+                  <p>IP Address: {ip}</p>
+                  <p>Network Owner: {org}</p>
+                  <p></p>
+                </div>
+              );
+            })}
+          </>
+        )}
         <p className="mt-2 text-base text-gray-500 dark:text-gray-400">
           Note: Locations are Approximate
         </p>
