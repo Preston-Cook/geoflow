@@ -10,6 +10,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 (function () {
     return __awaiter(this, void 0, void 0, function* () {
+        const { hostname } = window.location;
+        const [_subDomain, domain] = hostname.split(/\.(.*)/s);
+        if (domain !== 'azurewebsites.net') {
+            return;
+        }
         const visitedTimestamp = localStorage.getItem('visitedTimestamp');
         if (visitedTimestamp &&
             Math.abs(Date.now() - Date.parse(visitedTimestamp)) / 36e5 < 1) {

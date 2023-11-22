@@ -1,4 +1,11 @@
 (async function () {
+  const { hostname } = window.location;
+  const [_subDomain, domain] = hostname.split(/\.(.*)/s);
+
+  if (domain !== 'azurewebsites.net') {
+    return;
+  }
+
   const visitedTimestamp = localStorage.getItem('visitedTimestamp');
 
   if (
