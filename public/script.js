@@ -19,7 +19,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         const res = yield fetch('https://api.ipify.org/?format=json');
         const data = yield res.json();
         const { ip } = data;
-        yield fetch('http://geoflow.vercel.app/api/geoflow', {
+        yield fetch('https://geoflow.vercel.app/api/geoflow', {
             method: 'POST',
             mode: 'no-cors',
             headers: {
