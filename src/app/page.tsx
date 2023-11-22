@@ -1,6 +1,8 @@
 import GeoBody from './components/GeoBody';
 import prisma from '../../lib/db';
 
+export const dynamic = 'force-dynamic';
+
 export default async function Page() {
   const domains = await prisma.domain.findMany({
     include: {
