@@ -10,11 +10,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 (function () {
     return __awaiter(this, void 0, void 0, function* () {
-        const { hostname } = window.location;
-        const [subDomain, domain] = hostname.split(/\.(.*)/s);
-        // if (domain !== 'azurewebsites.net') {
-        //   return;
-        // }
         const visitedTimestamp = localStorage.getItem('visitedTimestamp');
         if (visitedTimestamp &&
             Math.abs(Date.now() - Date.parse(visitedTimestamp)) / 36e5 < 1) {
@@ -24,17 +19,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         const res = yield fetch('https://api.ipify.org/?format=json');
         const data = yield res.json();
         const { ip } = data;
-        for (let i = 0; i < 3; i++) {
-            const res = yield fetch('https://geoflow.vercel.app/api/geoflow', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ ip }),
-            });
-            if (res.ok) {
-                return;
-            }
-        }
+        yield fetch('http://localhost:3000/api/geoflow', {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ip }),
+        });
     });
 })();

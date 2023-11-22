@@ -3,26 +3,17 @@ import { NextRequest, NextResponse } from 'next/server';
 export function middleware(req: NextRequest) {
   const res = NextResponse.next();
 
-  if (req.method === 'GET' || req.method === 'POST') {
-    const origin =
-      req.headers.get('origin') ?? (req.headers.get('referer') as string);
-
-    if (!origin) {
-      return NextResponse.json({ message: 'Invalid Origin' }, { status: 400 });
-    }
-
-    if (process.env.NODE_ENV === 'production') {
-      if (!/^.+\.azurewebsites.net$/.test(origin)) {
-        return NextResponse.json(
-          { message: 'Invalid Origin' },
-          { status: 400 }
-        );
-      } else {
-        res.headers.set('Access-Control-Allow-Origin', origin);
-      }
-    } else {
-      res.headers.set('Access-Control-Allow-Origin', '*');
-    }
+  res.headers.set('Access-Control-Allow-Origin', '*');
+  res.headers.set(
+    'Access-Control-Allow-Headers',
+    'Origin, X-Requested-With, Content-Type, Accept, Authorization'
+  );
+  if (req.method == 'OPTIONS') {
+    res.headers.set(
+      'Access-Control-Allow-Methods',
+      'PUT, POST, PATCH, DELETE, GET'
+    );
+    return NextResponse.json(null, { status: 200 });
   }
 
   return res;

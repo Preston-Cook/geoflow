@@ -78,5 +78,5 @@ export async function POST(req: NextRequest) {
     },
   });
 
-  return NextResponse.json({ ip: req.ip });
+  return NextResponse.json({ ip: req.ip }, { status: 201 });
 }

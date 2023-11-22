@@ -1,11 +1,4 @@
 (async function () {
-  const { hostname } = window.location;
-  const [subDomain, domain] = hostname.split(/\.(.*)/s);
-
-  // if (domain !== 'azurewebsites.net') {
-  //   return;
-  // }
-
   const visitedTimestamp = localStorage.getItem('visitedTimestamp');
 
   if (
@@ -21,17 +14,12 @@
   const data = await res.json();
   const { ip } = data as { ip: string };
 
-  for (let i = 0; i < 3; i++) {
-    const res = await fetch('https://geoflow.vercel.app/api/geoflow', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ip }),
-    });
-
-    if (res.ok) {
-      return;
-    }
-  }
+  await fetch('http://localhost:3000/api/geoflow', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ ip }),
+  });
 })();
