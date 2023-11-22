@@ -14,7 +14,7 @@
   const data = await res.json();
   const { ip } = data as { ip: string };
 
-  await fetch('http://localhost:3000/api/geoflow', {
+  await fetch('http://geoflow.vercel.app/api/geoflow', {
     method: 'POST',
     mode: 'no-cors',
     headers: {
