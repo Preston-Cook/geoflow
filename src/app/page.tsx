@@ -13,7 +13,7 @@ export default async function Page() {
   return (
     <>
       <header>
-        <h1 className="font-semibold text-4xl text-center text-white bg-[#111827] mt-8 w-fit px-16 py-4 rounded-xl mx-auto md:w-[50%]">
+        <h1 className="font-semibold text-4xl text-center dark:text-white dark:bg-[#111827] bg-white mt-8 w-fit px-16 py-4 rounded-xl mx-auto md:w-[50%]">
           🌎 Geoflow
           <div>
             <p className="font-normal text-base mt-2 text-gray-500 dark:text-gray-400">

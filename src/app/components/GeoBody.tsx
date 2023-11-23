@@ -57,12 +57,12 @@ export default function GeoBody({ domainData }: GeoBodyProps) {
       <div className="w-[90%] md:w-[40%]">
         <Map domain={domain} selectedVisitId={selectedVisitId} />
       </div>
-      <div className="bg-[#1F2937] w-[90%] md:w-[40%] px-6 py-6 rounded-xl max-h-[40vh] overflow-scroll">
+      <div className="bg-white dark:bg-[#1F2937] w-[90%] md:w-[40%] px-6 py-6 rounded-xl max-h-[40vh] overflow-scroll">
         <label
           htmlFor="countries"
           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
         >
-          <p className="text-lg">
+          <p className="text-lg dark:text-white text-black">
             {domain
               ? `Showing ${domain.visits.length} Logged Visit(s) to ${domain.domain}`
               : 'Select a Subdomain'}
